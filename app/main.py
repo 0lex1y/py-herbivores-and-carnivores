@@ -8,10 +8,6 @@ class Animal:
             Animal.alive.append(self)
         self.hidden = False
 
-    def die(self) -> None:
-        if self in Animal.alive:
-            Animal.alive.remove(self)
-
     def __repr__(self) -> str:
         return (f"{{Name: {self.name}, "
                 f"Health: {self.health}, "
@@ -24,12 +20,12 @@ class Herbivore(Animal):
 
 
 class Carnivore(Animal):
-    @staticmethod
-    def bite(herbivore: Herbivore) -> None:
-        predator = next((a for a in Animal.alive
-                         if isinstance(a, Carnivore)), None)
-        if (predator and isinstance(herbivore, Herbivore)
-                and not herbivore.hidden):
-            herbivore.health -= 50
-            if herbivore.health <= 0:
-                herbivore.die()
+
+    def bite(self, target: Animal) -> None:
+        if not isinstance(target, Herbivore):
+            return
+        if target.hidden:
+            return
+        target.health = max(0, target.health - 50)
+        if target.health == 0 and target in Animal.alive:
+            Animal.alive.remove(target)
