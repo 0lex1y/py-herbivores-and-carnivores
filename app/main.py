@@ -6,7 +6,9 @@ class AliveList(list):
 class Animal:
     alive: AliveList = AliveList()
 
-    def __init__(self, name: str, health: int = 100) -> None:
+    def __init__(self,
+                 name: str,
+                 health: int = 100) -> None:
         self.name = name
         self.health = health
         if self.health > 0:
@@ -26,7 +28,8 @@ class Herbivore(Animal):
 
 class Carnivore(Animal):
 
-    def bite(self, target: Animal) -> None:
+    def bite(self,
+             target: Animal) -> None:
         if not isinstance(target, Herbivore):
             return
         if target.hidden:
